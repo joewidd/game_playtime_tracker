@@ -23,7 +23,7 @@ def get_game_playtime():
         else:
             for i in GAMES:
                 if game == i:
-                    print(f"\nYou've selected{game}")
+                    print(f"\nYou've selected {game}")
                     break
 
         hours = input(hours_prompt)
