@@ -9,6 +9,8 @@ Resources: Python Crash Course, 3rd Edition (Chapter 9 - Classes)
 10-30-2026
 """
 
+from tracker.exceptions import InvalidHoursError
+
 
 class Game:
     """A video game and the play sessions logged for it."""
@@ -22,10 +24,10 @@ class Game:
         """
         Log a play session of the given number of hours.
 
-        Raises ValueError if hours is not greater than zero.
+        Raises InvalidHoursError if hours is not greater than zero.
         """
         if hours <= 0:
-            raise ValueError("Hours played must be greater than zero.")
+            raise InvalidHoursError("Hours played must be greater than zero.")
         self.sessions.append(hours)
 
     def get_total_hours(self):

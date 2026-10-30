@@ -9,6 +9,7 @@ Resources: Python Crash Course, 3rd Edition (Chapter 11 - Testing Your Code)
 
 import pytest
 
+from tracker.exceptions import DuplicateGameError, GameNotFoundError
 from tracker.library import GameLibrary, create_default_library
 from tracker.models import Game, StoryGame, LiveServiceGame
 
@@ -28,14 +29,15 @@ def test_get_game_ignores_case_and_spaces(library):
     assert library.get_game("  OVERWATCH ").title == "Overwatch"
 
 
-def test_get_game_missing_returns_none(library):
-    """Looking up a game that isn't in the library returns None."""
-    assert library.get_game("Tetris") is None
+def test_get_game_missing_raises(library):
+    """Looking up a game that isn't in the library raises an error."""
+    with pytest.raises(GameNotFoundError):
+        library.get_game("Tetris")
 
 
 def test_add_duplicate_game_raises(library):
-    """Adding a second game with the same title raises a ValueError."""
-    with pytest.raises(ValueError):
+    """Adding a second game with the same title raises DuplicateGameError."""
+    with pytest.raises(DuplicateGameError):
         library.add_game(Game("HADES"))
 
 

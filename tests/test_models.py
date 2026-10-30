@@ -9,6 +9,7 @@ Resources: Python Crash Course, 3rd Edition (Chapter 11 - Testing Your Code)
 
 import pytest
 
+from tracker.exceptions import InvalidHoursError
 from tracker.models import Game, StoryGame, LiveServiceGame
 
 
@@ -35,8 +36,8 @@ def test_add_session_updates_totals(hades):
 
 @pytest.mark.parametrize("bad_hours", [0, -1, -0.5])
 def test_add_session_rejects_non_positive_hours(hades, bad_hours):
-    """Zero or negative hours raise a ValueError and are not logged."""
-    with pytest.raises(ValueError):
+    """Zero or negative hours raise InvalidHoursError and are not logged."""
+    with pytest.raises(InvalidHoursError):
         hades.add_session(bad_hours)
     assert hades.get_session_count() == 0
 

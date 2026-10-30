@@ -7,6 +7,7 @@ Resources: Python Crash Course, 3rd Edition (Chapter 9 - Classes)
 10-30-2026
 """
 
+from tracker.exceptions import DuplicateGameError, GameNotFoundError
 from tracker.models import StoryGame, LiveServiceGame
 
 STORY_GAME_TITLES = ("Hades", "Stardew Valley", "Elden Ring",
@@ -27,16 +28,24 @@ class GameLibrary:
         """
         Add a Game to the library.
 
-        Raises ValueError if a game with the same title already exists.
+        Raises DuplicateGameError if a game with the same title already exists.
         """
         key = game.title.lower()
         if key in self.games:
-            raise ValueError(f"{game.title} is already in the library.")
+            raise DuplicateGameError(f"{game.title} is already in the library.")
         self.games[key] = game
 
     def get_game(self, title):
-        """Return the game matching title (any case), or None if missing."""
-        return self.games.get(title.strip().lower())
+        """
+        Return the game matching title, ignoring case and extra spaces.
+
+        Raises GameNotFoundError if no game in the library matches.
+        """
+        try:
+            return self.games[title.strip().lower()]
+        except KeyError:
+            raise GameNotFoundError(
+                f"'{title}' is not in your library.") from None
 
     def get_titles(self):
         """Return a list of every game title in the library."""
