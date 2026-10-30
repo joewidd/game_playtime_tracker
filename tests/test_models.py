@@ -1,14 +1,15 @@
 """
 Game Playtime Tracker
 Joe Widdifield
-Unit tests for the Game class in tracker/models.py.
+Unit tests for the Game, StoryGame, and LiveServiceGame classes in
+tracker/models.py.
 Resources: Python Crash Course, 3rd Edition (Chapter 11 - Testing Your Code)
 10-30-2026
 """
 
 import pytest
 
-from tracker.models import Game
+from tracker.models import Game, StoryGame, LiveServiceGame
 
 
 @pytest.fixture
@@ -44,3 +45,34 @@ def test_describe(hades):
     """describe() summarizes the title, total hours, and session count."""
     hades.add_session(4)
     assert hades.describe() == "Hades: 4 hours over 1 session(s)"
+
+
+def test_story_game_inherits_session_tracking():
+    """StoryGame reuses Game's session methods and starts incomplete."""
+    elden_ring = StoryGame("Elden Ring")
+    elden_ring.add_session(10)
+    assert elden_ring.get_total_hours() == 10
+    assert elden_ring.completed is False
+
+
+def test_story_game_mark_completed():
+    """mark_completed() sets the flag and shows up in describe()."""
+    elden_ring = StoryGame("Elden Ring")
+    elden_ring.mark_completed()
+    assert elden_ring.completed is True
+    assert elden_ring.describe().endswith("- Completed")
+
+
+def test_live_service_game_default_rank():
+    """A LiveServiceGame starts Unranked unless a rank is given."""
+    assert LiveServiceGame("Overwatch").rank == "Unranked"
+    assert LiveServiceGame("Tekken", rank="Gold").rank == "Gold"
+
+
+def test_live_service_game_update_rank():
+    """update_rank() changes the rank shown in describe()."""
+    overwatch = LiveServiceGame("Overwatch")
+    overwatch.add_session(2)
+    overwatch.update_rank("Diamond")
+    assert overwatch.describe() == (
+        "Overwatch: 2 hours over 1 session(s) - Rank: Diamond")
