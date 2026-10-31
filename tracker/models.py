@@ -40,7 +40,7 @@ class Game:
 
     def describe(self):
         """Return a short summary of the game's playtime."""
-        return (f"{self.title}: {self.get_total_hours()} hours "
+        return (f"{self.title}: {self.get_total_hours():g} hours "
                 f"over {self.get_session_count()} session(s)")
 
     def to_dict(self):
