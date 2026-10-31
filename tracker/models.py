@@ -43,6 +43,18 @@ class Game:
         return (f"{self.title}: {self.get_total_hours()} hours "
                 f"over {self.get_session_count()} session(s)")
 
+    def to_dict(self):
+        """Return the game's data as a dictionary that can be saved as JSON."""
+        return {
+            "type": "Game",
+            "title": self.title,
+            "sessions": self.sessions,
+        }
+
+    def update_from_dict(self, game_data):
+        """Restore the game's logged sessions from a saved dictionary."""
+        self.sessions = list(game_data["sessions"])
+
 
 class StoryGame(Game):
     """A game with an ending that the player can complete."""
@@ -61,6 +73,18 @@ class StoryGame(Game):
         status = "Completed" if self.completed else "In progress"
         return f"{super().describe()} - {status}"
 
+    def to_dict(self):
+        """Return the game's data, including whether it was completed."""
+        game_data = super().to_dict()
+        game_data["type"] = "StoryGame"
+        game_data["completed"] = self.completed
+        return game_data
+
+    def update_from_dict(self, game_data):
+        """Restore the logged sessions and completion status."""
+        super().update_from_dict(game_data)
+        self.completed = game_data["completed"]
+
 
 class LiveServiceGame(Game):
     """An ongoing multiplayer game with no ending, tracked by rank."""
@@ -77,3 +101,15 @@ class LiveServiceGame(Game):
     def describe(self):
         """Return the playtime summary plus the player's rank."""
         return f"{super().describe()} - Rank: {self.rank}"
+
+    def to_dict(self):
+        """Return the game's data, including the player's rank."""
+        game_data = super().to_dict()
+        game_data["type"] = "LiveServiceGame"
+        game_data["rank"] = self.rank
+        return game_data
+
+    def update_from_dict(self, game_data):
+        """Restore the logged sessions and the player's rank."""
+        super().update_from_dict(game_data)
+        self.rank = game_data["rank"]

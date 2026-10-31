@@ -22,3 +22,7 @@ class GameNotFoundError(TrackerError):
 
 class DuplicateGameError(TrackerError):
     """Raised when adding a game whose title is already in the library."""
+
+
+class CorruptSaveFileError(TrackerError):
+    """Raised when the save file exists but cannot be read as playtime data."""
