@@ -1,6 +1,6 @@
-[Video Presentation (YouTube)](PASTE_YOUTUBE_LINK_HERE)
+[Video Presentation (YouTube)](https://youtu.be/w5fBm9AOIR8)
 
-[Slide Deck](PASTE_SLIDE_DECK_LINK_HERE)
+[Slide Deck](https://docs.google.com/presentation/d/1wRa-QEa4lEmtMDqss4uWeIimF4ZVErwleo25JgxfSdY/edit?usp=sharing)
 
 # game_playtime_tracker
 
@@ -69,7 +69,7 @@ tests/
   session tracking from `Game` and each add only what that kind of game
   needs: a completion status, or a rank.
 - **Composition for the library:** `GameLibrary` holds `Game` objects
-  instead of inheriting from `Game`, because a library *has* games but is
+  instead of inheriting from `Game`, because a library _has_ games but is
   not itself a game.
 - **Custom exceptions:** every tracker error inherits from `TrackerError`,
   so the menu can show a friendly message for expected problems while real
@@ -80,4 +80,4 @@ tests/
 
 ## Resources
 
-- *Python Crash Course, 3rd Edition* by Eric Matthes (Chapters 8-11)
+- _Python Crash Course, 3rd Edition_ by Eric Matthes (Chapters 8-11)
