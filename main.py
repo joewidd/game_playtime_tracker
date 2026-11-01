@@ -8,9 +8,12 @@ Resources: Python Crash Course, 3rd Edition (Chapters 8-10)
 10-31-2026
 """
 
+from datetime import date
+
 from tracker.exceptions import CorruptSaveFileError
 from tracker.library import create_default_library
 from tracker.models import StoryGame, LiveServiceGame
+from tracker.report import export_report
 from tracker.storage import load_library, save_library
 from tracker.user_input import is_quit_command, prompt_for_game, prompt_for_hours
 
@@ -89,12 +92,23 @@ def update_live_service_rank(library):
     print(f"\n{game.describe()}")
 
 
+def export_playtime_report(library):
+    """Write a text summary of the library's playtime to a file."""
+    try:
+        report_path = export_report(library, date.today())
+    except OSError as error:
+        print(f"\nCould not write the report: {error}")
+    else:
+        print(f"\nReport saved to {report_path.resolve()}")
+
+
 # Each menu choice maps to a description and the function that handles it.
 MENU_OPTIONS = {
     "1": ("Log a play session", log_session),
     "2": ("View your library", show_library),
     "3": ("Mark a story game as completed", complete_story_game),
     "4": ("Update a live service game rank", update_live_service_rank),
+    "5": ("Export a playtime report", export_playtime_report),
 }
 
 
